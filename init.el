@@ -112,11 +112,12 @@
 (if (display-graphic-p)
     (use-package git-gutter-fringe
       :ensure t
+      :diminish git-gutter-mode
       :init (global-git-gutter-mode))
   (use-package git-gutter
     :ensure t
+    :diminish git-gutter-mode
     :init (global-git-gutter-mode)))
-
 
 (use-package clojure-mode
   :ensure t
@@ -150,6 +151,12 @@
         cider-repl-use-clojure-font-lock t    
         nrepl-hide-special-buffers t)            
   (cider-repl-toggle-pretty-printing))
+
+ (use-package nerd-icons)
+
+ (use-package treemacs-nerd-icons
+   :config
+   (treemacs-load-theme "nerd-icons"))
 
 (setq gc-cons-threshold (* 100 1024 1024)
       read-process-output-max (* 1024 1024)
