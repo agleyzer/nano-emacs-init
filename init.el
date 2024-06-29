@@ -1,7 +1,6 @@
 (require 'package)
 
-(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 (package-initialize)
 
@@ -26,6 +25,7 @@
 (winner-mode 1)
 (show-paren-mode 1)
 (windmove-default-keybindings)
+(setopt use-short-answers t)  
 
 (use-package no-littering
   :ensure t
@@ -124,13 +124,19 @@
   :mode (("\\.clj\\'" . clojure-mode)
          ("\\.edn\\'" . clojure-mode))
   :init
-  (add-hook 'clojure-mode-hook #'yas-minor-mode)         
-  (add-hook 'clojure-mode-hook #'linum-mode)             
+  ;; (add-hook 'clojure-mode-hook #'yas-minor-mode)         
+  ;; (add-hook 'clojure-mode-hook #'linum-mode)             
   (add-hook 'clojure-mode-hook #'subword-mode)           
-  (add-hook 'clojure-mode-hook #'smartparens-mode)       
-  (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+  ;; (add-hook 'clojure-mode-hook #'smartparens-mode)       
+  ;; (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'clojure-mode-hook #'eldoc-mode)             
   (add-hook 'clojure-mode-hook #'idle-highlight-mode))
+
+(use-package idle-highlight-mode
+  :defer t)
+
+(use-package clj-refactor
+  :defer t)
 
 (use-package cider
   :ensure t
@@ -257,6 +263,8 @@
   ;; Line spacing (in pixels)
   ;; (setq line-spacing 0)
 
+  (pixel-scroll-precision-mode -1)
+  
   ;; Vertical window divider
   (setq window-divider-default-right-width 24)
   (setq window-divider-default-places 'right-only)
@@ -281,3 +289,29 @@
   :config
   (load-theme 'nano-light t)
   (gleyzer-nano-mode))
+
+
+;; (use-package vterm
+;;   :bind (("<f2>" . (lambda ()
+;;                      (interactive)
+;;                      (vterm--internal popper-display-function)))))
+
+(use-package popper
+  :ensure t ; or :straight t
+  :bind (("C-`"   . popper-toggle)
+         ("M-`"   . popper-cycle)
+         ("C-M-`" . popper-toggle-type))
+  :init
+  (setq popper-reference-buffers
+        '("\\*Messages\\*"
+          "Output\\*$"
+          "\\*vterm\\*"
+          "\\*Async Shell Command\\*"
+	  "\\*eat\\*"
+          help-mode
+          compilation-mode))
+  (popper-mode +1)
+  (popper-echo-mode +1))
+
+(use-package eat
+  :commands eat)
